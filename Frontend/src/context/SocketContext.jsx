@@ -37,7 +37,7 @@ export const SocketContextProvider = ({ children }) => {
 				setSocket(null);
 			}
 		}
-	}, [authUser]); // Only authUser is a dependency
+	}, [authUser, socket]);
 
 	return <SocketContext.Provider value={{ socket, onlineUsers }}>{children}</SocketContext.Provider>;
 };
