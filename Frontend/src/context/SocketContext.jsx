@@ -28,8 +28,8 @@ export const SocketContextProvider = ({ children }) => {
 			});
 
 			return () => {
-				socketInstance.off("getOnlineUsers"); // Clean up the event listener
-				socketInstance.close(); // Close the socket
+				socketInstance.off("getOnlineUsers");
+				socketInstance.close();
 			};
 		} else {
 			if (socket) {
@@ -37,15 +37,7 @@ export const SocketContextProvider = ({ children }) => {
 				setSocket(null);
 			}
 		}
-	}, [authUser]);
-
-	useEffect(() => {
-		return () => {
-			if (socket) {
-				socket.close();
-			}
-		};
-	}, [socket]);
+	}, [authUser]); // Only authUser is a dependency
 
 	return <SocketContext.Provider value={{ socket, onlineUsers }}>{children}</SocketContext.Provider>;
 };
