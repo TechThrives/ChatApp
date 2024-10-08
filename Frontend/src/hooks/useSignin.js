@@ -6,15 +6,16 @@ const useSignin = () => {
 	const [loading, setLoading] = useState(false);
 	const { setAuthUser } = useAuthContext();
 
-	const signin = async (username, password) => {
-		const success = handleInputErrors(username, password);
+	const signin = async (email, password) => {
+		const success = handleInputErrors(email, password);
 		if (!success) return;
 		setLoading(true);
 		try {
 			const res = await fetch(`${process.env.REACT_APP_API_URL}/api/auth/signin`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ username, password }),
+				body: JSON.stringify({ email, password }),
+				credentials: "include",
 			});
 			
 			const data = await res.json();
@@ -35,8 +36,8 @@ const useSignin = () => {
 };
 export default useSignin;
 
-function handleInputErrors(username, password) {
-	if (!username || !password) {
+function handleInputErrors(email, password) {
+	if (!email || !password) {
 		toast.error("Please fill in all fields");
 		return false;
 	}

@@ -4,7 +4,7 @@ import useSignin from "../../hooks/useSignin";
 import Logo from '../../assets/logo.png'; 
 
 const SignIn = () => {
-	const [username, setUsername] = useState("");
+	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 	const { loading, signin } = useSignin();
@@ -12,7 +12,7 @@ const SignIn = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setError(""); 
-		await signin(username, password); 
+		await signin(email, password); 
 	};
 
 	return (
@@ -30,13 +30,13 @@ const SignIn = () => {
 						{error && <p className="text-red-500">{error}</p>} {/* Display error message */}
 						<form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
 							<div>
-								<label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900">Email</label>
+								<label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Email</label>
 								<input 
-									type="text" 
-									name="username" 
-									id="username" 
-									value={username} 
-									onChange={(e) => setUsername(e.target.value)} 
+									type="email" 
+									name="email" 
+									id="email" 
+									value={email} 
+									onChange={(e) => setEmail(e.target.value)} 
 									className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" 
 									placeholder="name@company.com" 
 									required 

@@ -7,9 +7,9 @@ const generateTokenAndSetCookie = (userId, res) => {
 
   res.cookie("token", token, {
     httpOnly: true,
-    sameSite: "none", 
-    secure: false, 
-    maxAge: 15 * 24 * 60 * 60 * 1000, 
+    secure: false,
+    sameSite: "strict",
+    maxAge: 15 * 24 * 60 * 60 * 1000,
   });
 };
 

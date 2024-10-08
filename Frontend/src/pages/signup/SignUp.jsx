@@ -6,7 +6,7 @@ import Logo from '../../assets/logo.png';
 const SignUp = () => {
 	const [inputs, setInputs] = useState({
 		fullName: "",
-		username: "",
+		email: "",
 		password: "",
 		confirmPassword: "",
 		gender: "",
@@ -55,12 +55,12 @@ const SignUp = () => {
 								/>
 							</div>
 							<div>
-								<label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900">Email</label>
+								<label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Email</label>
 								<input 
-									type="text" 
-									name="username" 
-									id="username" 
-									value={inputs.username} 
+									type="email" 
+									name="email" 
+									id="email" 
+									value={inputs.email} 
 									onChange={handleChange} 
 									className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" 
 									placeholder="name@company.com" 
