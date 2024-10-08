@@ -12,22 +12,21 @@ import { app, server } from "./socket/socket.js";
 
 dotenv.config();
 
-app.use(cors({
-	origin: 'http://localhost:3000',
-}));
+const corsOptions = {
+	credentials: true,
+	origin: process.env.FRONTEND_URL,
+  };
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
-app.use(express.json()); 
+app.use(express.json());
 app.use(cookieParser());
+app.use(cors(corsOptions));
+
 
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/users", userRoutes);
-
-app.get("*", (req, res) => {
-	res.json({ message: 'This is a response from the backend!' });
-});
 
 server.listen(PORT, () => {
 	connectToMongoDB();

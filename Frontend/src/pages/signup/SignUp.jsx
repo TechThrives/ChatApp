@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import GenderCheckbox from "./GenderCheckbox";
 import { useState } from "react";
-import useSignup from "../../hooks/useSignup";
+import { Link } from "react-router-dom";
+import useSignup from "../../hooks/useSignup"; 
+import Logo from '../../assets/logo.png'; 
 
 const SignUp = () => {
 	const [inputs, setInputs] = useState({
@@ -18,89 +18,123 @@ const SignUp = () => {
 		setInputs({ ...inputs, gender });
 	};
 
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setInputs((prev) => ({ ...prev, [name]: value }));
+	};
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		await signup(inputs);
 	};
 
 	return (
-		<div className='flex flex-col items-center justify-center min-w-96 mx-auto'>
-			<div className='w-full p-6 rounded-lg shadow-md bg-[#141414]'>
-				<h1 className='text-3xl font-semibold text-center text-gray-300'>
-					Sign Up <span className='text-blue-500'> ChatApp</span>
-				</h1>
+		<section className="bg-gray-50">
+			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-full">
+				<div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
+					<div className="p-6 space-y-4 sm:p-8 md:space-y-6">
+					<div className="flex items-center justify-center mb-6 text-2xl font-semibold text-gray-900">
+					<img className="w-16 h-16 mr-2" src={Logo} alt="logo" /> {/* Use your logo image here */}
+					ChatApp
+				</div>
+						<h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+							Create your account
+						</h1>
+						<form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+							<div>
+								<label htmlFor="fullName" className="block mb-2 text-sm font-medium text-gray-900">Full Name</label>
+								<input 
+									type="text" 
+									name="fullName" 
+									id="fullName" 
+									value={inputs.fullName} 
+									onChange={handleChange} 
+									className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" 
+									placeholder="John Doe" 
+									required 
+								/>
+							</div>
+							<div>
+								<label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900">Email</label>
+								<input 
+									type="text" 
+									name="username" 
+									id="username" 
+									value={inputs.username} 
+									onChange={handleChange} 
+									className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" 
+									placeholder="name@company.com" 
+									required 
+								/>
+							</div>
+							<div>
+								<label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">Password</label>
+								<input 
+									type="password" 
+									name="password" 
+									id="password" 
+									value={inputs.password} 
+									onChange={handleChange} 
+									className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" 
+									placeholder="••••••••" 
+									required 
+								/>
+							</div>
+							<div>
+								<label htmlFor="confirmPassword" className="block mb-2 text-sm font-medium text-gray-900">Confirm Password</label>
+								<input 
+									type="password" 
+									name="confirmPassword" 
+									id="confirmPassword" 
+									value={inputs.confirmPassword} 
+									onChange={handleChange} 
+									className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5" 
+									placeholder="••••••••" 
+									required 
+								/>
+							</div>
+							<div>
+								<label className="block mb-2 text-sm font-medium text-gray-900">Gender</label>
+								<div className="flex items-center">
+									<label className="mr-4">
+										<input 
+											type="radio" 
+											value="male" 
+											name="gender" 
+											checked={inputs.gender === "male"} 
+											onChange={() => handleCheckboxChange("male")} 
+										/>
+										Male
+									</label>
+									<label>
+										<input 
+											type="radio" 
+											value="female" 
+											name="gender" 
+											checked={inputs.gender === "female"} 
+											onChange={() => handleCheckboxChange("female")} 
+										/>
+										Female
+									</label>
+								</div>
+							</div>
 
-				<form onSubmit={handleSubmit}>
-					<div>
-						<label className='label p-2'>
-							<span className='text-base label-text'>Full Name</span>
-						</label>
-						<input
-							type='text'
-							placeholder='John Doe'
-							className='w-full input input-bordered  h-10'
-							value={inputs.fullName}
-							onChange={(e) => setInputs({ ...inputs, fullName: e.target.value })}
-						/>
+							<button 
+								type="submit" 
+								className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+								disabled={loading}
+							>
+								{loading ? "Loading..." : "Sign up"}
+							</button>
+							<p className="text-md font-medium text-gray-500">
+								Already have an account? <Link to="/signin" className="font-semibold text-blue-600 hover:underline">Login</Link>
+							</p>
+						</form>
 					</div>
-
-					<div>
-						<label className='label p-2 '>
-							<span className='text-base label-text'>Username</span>
-						</label>
-						<input
-							type='text'
-							placeholder='johndoe'
-							className='w-full input input-bordered h-10'
-							value={inputs.username}
-							onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
-						/>
-					</div>
-
-					<div>
-						<label className='label'>
-							<span className='text-base label-text'>Password</span>
-						</label>
-						<input
-							type='password'
-							placeholder='Enter Password'
-							className='w-full input input-bordered h-10'
-							value={inputs.password}
-							onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
-						/>
-					</div>
-
-					<div>
-						<label className='label'>
-							<span className='text-base label-text'>Confirm Password</span>
-						</label>
-						<input
-							type='password'
-							placeholder='Confirm Password'
-							className='w-full input input-bordered h-10'
-							value={inputs.confirmPassword}
-							onChange={(e) => setInputs({ ...inputs, confirmPassword: e.target.value })}
-						/>
-					</div>
-
-					<GenderCheckbox onCheckboxChange={handleCheckboxChange} selectedGender={inputs.gender} />
-
-					<Link
-						to={"/login"}
-						className='text-sm hover:underline hover:text-blue-600 mt-2 inline-block'
-						href='#'
-					>
-						Already have an account?
-					</Link>
-
-					<div>
-						<button className='btn btn-block btn-sm mt-2 border border-slate-700' disabled={loading}>
-							{loading ? <span className='loading loading-spinner'></span> : "Sign Up"}
-						</button>
-					</div>
-				</form>
+				</div>
 			</div>
-		</div>
+		</section>
 	);
 };
+
 export default SignUp;

@@ -47,13 +47,13 @@ npm install
     
     Open the `.env` file and add the following environment variables:
 
+    - **`FRONTEND_URL`**: URL of the frontend application for CORS configuration.
+    
     - **`PORT`**: Specifies the port on which the backend server will listen.
 
-    - **`MONGO_URI`**: Connection string for MongoDB, including credentials and database information.
+    - **`MONGO_DB_URI`**: Connection string for MongoDB, including credentials and database information.
 
     - **`JWT_SECRET`**: Secret key used for signing JSON Web Tokens.
-
-    - **`FRONTEND_URL`**: URL of the frontend application for CORS configuration.
 
     By setting these environment variables, you ensure that your application is configured correctly for different environments and scenarios.
 

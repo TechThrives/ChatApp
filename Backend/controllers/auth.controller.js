@@ -53,7 +53,7 @@ export const signup = async (req, res) => {
 	}
 };
 
-export const login = async (req, res) => {
+export const signin = async (req, res) => {
 	try {
 		const { username, password } = req.body;
 		const user = await User.findOne({ username });
@@ -77,7 +77,7 @@ export const login = async (req, res) => {
 	}
 };
 
-export const logout = (req, res) => {
+export const signout = (req, res) => {
 	try {
 		res.cookie("jwt", "", { maxAge: 0 });
 		res.status(200).json({ message: "Logged out successfully" });
