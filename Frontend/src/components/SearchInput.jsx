@@ -1,40 +1,39 @@
 import { useState } from "react";
-import { IoSearchSharp } from "react-icons/io5";
+import { Icon } from "@iconify/react";
 import toast from "react-hot-toast";
-import useGetConversations from "../hooks/useGetConversations";
+import useGetUsers from "../hooks/useGetUsers";
 
-const SearchInput = ({ setFilteredConversations }) => {
+const SearchInput = ({ setFilteredUsers }) => {
   const [search, setSearch] = useState("");
-  const { conversations } = useGetConversations();
+  const { users } = useGetUsers();
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const filteredConversations = conversations.filter((conversation) =>
-      conversation.fullName.toLowerCase().includes(search.toLowerCase())
+    const filteredUsers = users.filter((user) =>
+      user.fullName.toLowerCase().includes(search.toLowerCase())
     );
 
-    if (filteredConversations.length === 0) {
-      toast.error("No conversations found!");
+    if (filteredUsers.length === 0) {
+      toast.error("No users found!");
     } else {
-      toast.success(`${filteredConversations.length} conversation(s) found`);
+      toast.success(`${filteredUsers.length} user(s) found`);
     }
 
-    // Pass filtered conversations to parent component
-    setFilteredConversations(filteredConversations);
+    setFilteredUsers(filteredUsers);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center gap-2 mb-4">
+    <form onSubmit={handleSubmit} className="flex items-center gap-2 m-4">
       <input
         type="text"
         placeholder="Search…"
-        className="pl-10 p-2 border rounded-full w-full"
+        className="pl-4 p-2 border-2 border-gray-300  rounded-full w-full"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
       <button type="submit" className="p-2 bg-sky-500 text-white rounded-full">
-        <IoSearchSharp className="w-6 h-6 outline-none" />
+        <Icon icon="mdi:magnify" className="w-6 h-6 outline-none" />
       </button>
     </form>
   );

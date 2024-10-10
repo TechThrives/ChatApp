@@ -8,6 +8,13 @@ const Conversation = ({ conversation, lastIdx }) => {
   const { onlineUsers } = useSocketContext();
   const isOnline = onlineUsers.includes(conversation._id);
 
+  const truncateText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.slice(0, maxLength) + "..."; 
+    }
+    return text;
+  };
+
   return (
     <>
       <div
@@ -22,8 +29,8 @@ const Conversation = ({ conversation, lastIdx }) => {
           className="w-10 h-10 rounded-full mr-3"
         />
         <div className="flex-1">
-          <h2 className="font-semibold text-sm">{conversation.fullName}</h2>
-          {/* <p className="text-xs text-gray-500">{contact.lastMessage}</p> */}
+          <h2 className="font-semibold text-sm truncate">{truncateText(conversation.fullName, 20)}</h2>
+          <p className="text-xs text-gray-500 truncate">{truncateText(conversation.lastMessage?.message || "No messages yet", 30)}</p>
         </div>
         {isOnline && <div className="w-2 h-2 bg-green-500 rounded-full"></div>}
       </div>
@@ -32,4 +39,5 @@ const Conversation = ({ conversation, lastIdx }) => {
     </>
   );
 };
+
 export default Conversation;

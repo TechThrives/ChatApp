@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
-import useGetConversations from "../hooks/useGetConversations";
+import useGetUsers from "../hooks/useGetUsers";
 import { useSocketContext } from "../context/SocketContext";
 import useConversation from "../zustand/useConversation";
 import { Icon } from "@iconify/react";
 import SearchInput from "./SearchInput";
 
 const Modal = ({ closeModal }) => {
-  const { loading, conversations } = useGetConversations();
+  const { loading, users } = useGetUsers();
   const {setSelectedConversation } = useConversation();
-  const [filteredConversations, setFilteredConversations] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
   useEffect(() => {
-    if (conversations.length > 0) {
-      setFilteredConversations(conversations);
+    if (users.length > 0) {
+      setFilteredUsers(users);
     }
-  }, [conversations]);
+  }, [users]);
 
-  const handleConversationClick = (conversation) => {
-    setSelectedConversation(conversation);
+  const handleConversationClick = (user) => {
+    setSelectedConversation(user);
     closeModal();
   };
 
@@ -41,13 +41,13 @@ const Modal = ({ closeModal }) => {
             <Icon icon="mdi:close" className="h-5 w-5" />
           </button>
           <h2 className="font-semibold">Create New Chat</h2>
+          <SearchInput setFilteredUsers={setFilteredUsers}  />
           <div className="mt-4 h-[300px] overflow-y-auto">
-          <SearchInput setFilteredConversations={setFilteredConversations} />
-            {filteredConversations.map((conversation, idx) => (
+            {filteredUsers.map((user, idx) => (
               <Conversation
-                key={conversation._id}
-                conversation={conversation}
-                lastIdx={idx === conversations.length - 1}
+                key={user._id}
+                user={user}
+                lastIdx={idx === users.length - 1}
                 onConversationClick={handleConversationClick}
               />
             ))}
@@ -63,23 +63,23 @@ const Modal = ({ closeModal }) => {
   );
 };
 
-const Conversation = ({ conversation, lastIdx, onConversationClick }) => {
+const Conversation = ({ user, lastIdx, onConversationClick }) => {
   const { onlineUsers } = useSocketContext();
-  const isOnline = onlineUsers.includes(conversation._id);
+  const isOnline = onlineUsers.includes(user._id);
 
   return (
     <>
       <div
         className="flex items-center p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
-        onClick={() => onConversationClick(conversation)}
+        onClick={() => onConversationClick(user)}
       >
         <img
-          src={conversation.profilePic}
-          alt={conversation.fullName}
+          src={user.profilePic}
+          alt={user.fullName}
           className="w-10 h-10 rounded-full mr-3"
         />
         <div className="flex-1">
-          <h2 className="font-semibold text-sm">{conversation.fullName}</h2>
+          <h2 className="font-semibold text-sm">{user.fullName}</h2>
         </div>
         {isOnline && <div className="w-2 h-2 bg-green-500 rounded-full"></div>}
       </div>

@@ -1,20 +1,8 @@
-import { useEffect } from "react";
 import useGetConversationsHistory from "../hooks/useGetConversationsHistory";
 import Conversation from "./Conversation";
-import { useSocketContext } from "../context/SocketContext";
 
 const Conversations = () => {
-  const { loading, conversations, getConversationsHistory } =
-    useGetConversationsHistory();
-  const { socket } = useSocketContext();
-  useEffect(() => {
-    if (!socket) return;
-    socket.on("newMessage", (newMessage) => {
-      getConversationsHistory();
-    });
-
-    return () => socket.off("newMessage");
-  }, [socket]);
+  const { loading, conversations } = useGetConversationsHistory();
 
   return (
     <div className="h-[calc(100vh-280px)] overflow-y-auto">

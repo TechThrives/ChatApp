@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html, body {
+  font-family: 'Poppins', sans-serif; 
+}
+
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -12,12 +16,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #54ee2d;
+  background: #2d7aee;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3aa520;
+  background: #1c5ec2;
 }
 
 /* SHAKE ANIMATION ON HORIZONTAL DIRECTION */

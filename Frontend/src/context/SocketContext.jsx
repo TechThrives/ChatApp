@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect, useContext, useRef } from "react";
 import { useAuthContext } from "./AuthContext";
 import SocketIoClient from "socket.io-client";
 
@@ -9,40 +9,36 @@ export const useSocketContext = () => {
 };
 
 export const SocketContextProvider = ({ children }) => {
-  const [socket, setSocket] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const { authUser } = useAuthContext();
+  const socketRef = useRef(null); 
 
   useEffect(() => {
-    if (authUser) {
-      const socketInstance = SocketIoClient(process.env.REACT_APP_API_URL, {
+    if (authUser && !socketRef.current) {
+      socketRef.current = SocketIoClient(process.env.REACT_APP_API_URL, {
         query: {
           userId: authUser._id,
         },
-		transports : ['websocket'],
+        transports: ["websocket"],
         withCredentials: true,
       });
 
-      setSocket(socketInstance);
-
-      socketInstance.on("getOnlineUsers", (users) => {
+      socketRef.current.on("getOnlineUsers", (users) => {
         setOnlineUsers(users);
       });
 
       return () => {
-        socketInstance.off("getOnlineUsers");
-        socketInstance.close();
+        if (socketRef.current) {
+          socketRef.current.off("getOnlineUsers");
+          socketRef.current.close();
+          socketRef.current = null;
+        }
       };
-    } else {
-      if (socket) {
-        socket.close();
-        setSocket(null);
-      }
     }
   }, [authUser]);
 
   return (
-    <SocketContext.Provider value={{ socket, onlineUsers }}>
+    <SocketContext.Provider value={{ socket: socketRef.current, onlineUsers }}>
       {children}
     </SocketContext.Provider>
   );

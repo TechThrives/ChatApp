@@ -15,12 +15,12 @@ const Messages = () => {
   }, [messages]);
 
   return (
-    <div className="px-4 flex-1 overflow-auto">
+    <div className="px-2 flex-1 overflow-auto">
       {!loading &&
         messages.length > 0 &&
         messages.map((message) => (
           <div
-            className="flex-1 overflow-y-auto p-4"
+            className="flex-1 overflow-y-auto p-2"
             key={message._id}
             ref={lastMessageRef}
           >

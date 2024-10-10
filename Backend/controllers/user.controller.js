@@ -20,23 +20,31 @@ export const getUsersWithConversationsHistory = async (req, res) => {
 
     const conversations = await Conversation.find({ participants: loggedInUserId })
       .populate("participants", "-password") 
+      .populate("lastMessage") 
       .exec();
 
-    const userIds = new Set(); 
+    const usersWithLastMessage = []; 
 
     conversations.forEach(conversation => {
       conversation.participants.forEach(participant => {
         if (participant._id.toString() !== loggedInUserId.toString()) {
-          userIds.add(participant._id);
+          usersWithLastMessage.push({
+            _id: participant._id,
+            fullName: participant.fullName,
+            email: participant.email,
+            gender: participant.gender,
+            profilePic: participant.profilePic,
+            createdAt: participant.createdAt,
+            updatedAt: participant.updatedAt,
+            lastMessage: conversation.lastMessage || null, 
+          });
         }
       });
     });
 
-    const filteredUsers = await User.find({ _id: { $in: Array.from(userIds) } }).select("-password");
-
-    res.status(200).json(filteredUsers);
+    res.status(200).json(usersWithLastMessage);
   } catch (error) {
-    console.error("Error in getUsersWithChatHistory: ", error.message);
+    console.error("Error in getUsersWithConversationsHistory: ", error.message);
     res.status(500).json({ error: "Internal server error" });
   }
 };
