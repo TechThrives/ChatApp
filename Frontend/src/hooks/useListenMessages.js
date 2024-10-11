@@ -1,25 +1,31 @@
-import { useEffect } from "react";
-
+import { useEffect, useMemo } from "react";
 import { useSocketContext } from "../context/SocketContext";
 import useConversation from "../zustand/useConversation";
-
 import notificationSound from "../assets/sounds/notification.mp3";
 
 const useListenMessages = () => {
-	const { socket } = useSocketContext();
-	const { messages, setMessages, selectedConversation } = useConversation();
-	const sound = new Audio(notificationSound);
+  const { socket } = useSocketContext();
+  const { setMessages, selectedConversation } = useConversation();
+  
+  const sound = useMemo(() => new Audio(notificationSound), []);
 
-	useEffect(() => {
-		socket?.on("newMessage", (newMessage) => {
-			if(newMessage.senderId === selectedConversation._id) {
-			newMessage.shouldShake = true;
-			sound.play();
-				setMessages([...messages, newMessage]);
-			}
-		});
+  useEffect(() => {
+    if (!socket) return;
 
-		return () => socket?.off("newMessage");
-	}, [socket, setMessages, messages]);
+    const handleNewMessage = (newMessage) => {
+      if (newMessage.senderId === selectedConversation._id) {
+        newMessage.shouldShake = true;
+        sound.play();
+        setMessages((prevMessages) => [...prevMessages, newMessage]); 
+      }
+    };
+
+    socket.on("newMessage", handleNewMessage);
+
+    return () => {
+      socket.off("newMessage", handleNewMessage);
+    };
+  }, [socket, setMessages, selectedConversation, sound]);
 };
+
 export default useListenMessages;

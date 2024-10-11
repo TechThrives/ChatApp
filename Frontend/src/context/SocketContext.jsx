@@ -11,7 +11,7 @@ export const useSocketContext = () => {
 export const SocketContextProvider = ({ children }) => {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const { authUser } = useAuthContext();
-  const socketRef = useRef(null); 
+  const socketRef = useRef(null);
 
   useEffect(() => {
     if (authUser && !socketRef.current) {
@@ -19,8 +19,8 @@ export const SocketContextProvider = ({ children }) => {
         query: {
           userId: authUser._id,
         },
-        transports: ["websocket"],
         withCredentials: true,
+        transports: ["websocket", "polling"],
       });
 
       socketRef.current.on("getOnlineUsers", (users) => {

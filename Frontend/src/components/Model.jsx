@@ -7,7 +7,7 @@ import SearchInput from "./SearchInput";
 
 const Modal = ({ closeModal }) => {
   const { loading, users } = useGetUsers();
-  const {setSelectedConversation } = useConversation();
+  const { setSelectedConversation } = useConversation();
   const [filteredUsers, setFilteredUsers] = useState([]);
 
   useEffect(() => {
@@ -41,20 +41,25 @@ const Modal = ({ closeModal }) => {
             <Icon icon="mdi:close" className="h-5 w-5" />
           </button>
           <h2 className="font-semibold">Create New Chat</h2>
-          <SearchInput setFilteredUsers={setFilteredUsers}  />
+          <SearchInput setFilteredUsers={setFilteredUsers} />
           <div className="mt-4 h-[300px] overflow-y-auto">
-            {filteredUsers.map((user, idx) => (
-              <Conversation
-                key={user._id}
-                user={user}
-                lastIdx={idx === users.length - 1}
-                onConversationClick={handleConversationClick}
-              />
-            ))}
-            {loading && (
-              <div className="flex items-center justify-center h-1/2">
+            {loading ? (
+              <div className="flex items-center justify-center h-full">
                 <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500 border-solid"></div>
               </div>
+            ) : !filteredUsers.length ? (
+              <div className="flex items-center justify-center h-full">
+                <p>No users found</p>
+              </div>
+            ) : (
+              filteredUsers.map((user, idx) => (
+                <Conversation
+                  key={user._id}
+                  user={user}
+                  lastIdx={idx === users.length - 1}
+                  onConversationClick={handleConversationClick}
+                />
+              ))
             )}
           </div>
         </div>
