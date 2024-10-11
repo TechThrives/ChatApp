@@ -4,6 +4,7 @@ import SignIn from "./pages/signin/SignIn";
 import SignUp from "./pages/signup/SignUp";
 import { Toaster } from "react-hot-toast";
 import { useAuthContext } from "./context/AuthContext";
+import NotFound from "./pages/error/NotFound";
 
 function App() {
 	const { authUser } = useAuthContext();
@@ -13,6 +14,7 @@ function App() {
 				<Route path='/' element={authUser ? <Home /> : <Navigate to={"/signin"} />} />
 				<Route path='/signin' element={authUser ? <Navigate to='/' /> : <SignIn />} />
 				<Route path='/signup' element={authUser ? <Navigate to='/' /> : <SignUp />} />
+				<Route path='*' element={<NotFound />} />
 			</Routes>
 			<Toaster />
 		</>

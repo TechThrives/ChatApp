@@ -10,7 +10,7 @@ const MessageContainer = () => {
   return (
     <div className="h-full flex-1 flex flex-col">
       {/* Chat Header */}
-      <div className="p-2 bg-blue-200 border-b border-gray-200 flex justify-between items-center">
+      <div className="p-2 bg-blue-300 border-b border-gray-200 flex justify-between items-center">
         <img
           src={selectedConversation.profilePic}
           alt={selectedConversation.fullName}

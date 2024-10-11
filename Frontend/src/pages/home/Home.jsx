@@ -18,12 +18,11 @@ export default function Home() {
   useEffect(() => {
     if (selectedConversation) {
       setIsSidebarOpen(false);
+    } else {
+      setSelectedConversation(null);
     }
-  }, [selectedConversation]);
-
-  useEffect(() => {
-    return () => setSelectedConversation(null);
-  }, [setSelectedConversation]);
+  }, [selectedConversation, setSelectedConversation]);
+  
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
@@ -89,13 +88,13 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Create New Chat Button */}
+          {/* New Chat Button */}
           <button
-            className="text-white font-medium bg-blue-500 w-full justify-start p-2 border border-gray-300 rounded-lg flex items-center mb-4"
+            className="text-white font-medium bg-blue-500 hover:bg-blue-600 w-full justify-start p-2 border border-gray-300 rounded-lg flex items-center mb-4"
             onClick={() => setIsNewChatOpen(true)}
           >
             <Icon icon="mdi:plus" className="mr-2 h-4 w-4" />
-            Create New Chat
+           New Chat
           </button>
           <Conversations />
         </aside>

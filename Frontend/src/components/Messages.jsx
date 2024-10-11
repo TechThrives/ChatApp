@@ -9,42 +9,32 @@ const Messages = () => {
   const lastMessageRef = useRef();
 
   useEffect(() => {
-    setTimeout(() => {
-      lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, 100);
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   }, [messages]);
 
   return (
     <div className="px-2 flex-1 overflow-auto">
-      {!loading &&
-        messages.length > 0 &&
-        messages.map((message) => (
-          <div
-            className="flex-1 overflow-y-auto p-2"
-            key={message._id}
-            ref={lastMessageRef}
-          >
-            <Message message={message} />
-          </div>
-        ))}
-
-      {loading && (
+      {loading ? (
         <div className="flex items-center justify-center h-full">
           <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-blue-500 border-solid"></div>
         </div>
-      )}
-      {!loading && messages.length === 0 && (
+      ) : messages.length > 0 ? (
+        messages.map((message) => (
+          <div className="flex-1 overflow-y-auto p-2" key={message._id} ref={lastMessageRef}>
+            <Message message={message} />
+          </div>
+        ))
+      ) : (
         <div className="flex items-center justify-center w-full h-full">
-        <div className="px-4 text-center text-lg text-black font-semibold flex flex-col items-center gap-2">
-          <div className="flex items-center justify-center">
-            <p className="mr-2">
-              Select a chat to start messaging or Create a new chat
-            </p>
+          <div className="px-4 text-center text-lg text-black font-semibold flex flex-col items-center gap-2">
+            <p className="mr-2">No messages</p>
           </div>
         </div>
-      </div>
       )}
     </div>
   );
 };
+
 export default Messages;
